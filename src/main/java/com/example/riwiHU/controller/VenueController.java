@@ -1,7 +1,11 @@
 package com.example.riwiHU.controller;
 
+import com.example.riwiHU.dto.ApiResponse;
+import com.example.riwiHU.dto.VenueRequest;
+import com.example.riwiHU.dto.VenueResponse;
 import com.example.riwiHU.model.Venue;
 import com.example.riwiHU.services.VenueServices;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +22,13 @@ public class VenueController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Venue saveVenue(@RequestBody Venue venue){
-        return venueServices.createVenue(venue);
+    public ApiResponse<VenueResponse> saveVenue(@Valid @RequestBody VenueRequest venue){
+        VenueResponse venueRes = venueServices.createVenue(venue);
+        return new ApiResponse<>(
+                true,
+                "venue Creada",
+                venueRes
+        );
     }
 
     @GetMapping

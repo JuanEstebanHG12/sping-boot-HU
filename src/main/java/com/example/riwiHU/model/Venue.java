@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class Venue {
     int id;
     String nombre;
-    String dirección;
+    String direction;
     int capacidad;
 }
