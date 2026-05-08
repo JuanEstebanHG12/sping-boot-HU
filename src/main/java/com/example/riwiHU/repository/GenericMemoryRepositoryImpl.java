@@ -1,5 +1,7 @@
 package com.example.riwiHU.repository;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.*;
 import java.util.function.Function;
 
