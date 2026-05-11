@@ -25,12 +25,12 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        return new ApiResponse<>(false, "Errores de validación", errors);
+        return new ApiResponse<>(false, "Errores de validación",null, errors);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse<String> handleGenericException(Exception ex) {
-        return ApiResponse.error("Error interno del servidor: " + ex.getMessage());
+        return ApiResponse.error("Error interno del servidor: " + ex.getMessage(), null);
     }
 }
