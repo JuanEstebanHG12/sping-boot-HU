@@ -18,6 +18,11 @@ public class AppConfig {
         return new GenericMemoryRepositoryImpl<>(Venue::getId);
     }
 
+    @Bean
+    public GenericRepository<Events, Integer> eventRepository() {
+        return new GenericMemoryRepositoryImpl<>(Events::getId);
+    }
+
 //    @Bean
 //    public CommandLineRunner seedData(VenueRepository venueRepository, EventsRepository eventsRepository) {
 //        return args -> {

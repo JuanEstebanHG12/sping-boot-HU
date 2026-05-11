@@ -1,4 +1,4 @@
-package com.example.riwiHU.model;
+package com.example.riwiHU.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Events {
+public class EventResponse {
     int id;
     String nombre;
     LocalDateTime fecha;
