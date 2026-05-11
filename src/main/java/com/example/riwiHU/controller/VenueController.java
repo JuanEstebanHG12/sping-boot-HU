@@ -24,15 +24,12 @@ public class VenueController {
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<VenueResponse> saveVenue(@Valid @RequestBody VenueRequest venue){
         VenueResponse venueRes = venueServices.createVenue(venue);
-        return new ApiResponse<>(
-                true,
-                "venue Creada",
-                venueRes
-        );
+        return ApiResponse.success(venueRes, "venue Creada");
     }
 
     @GetMapping
-    public List<Venue> getAllVenues(){
-        return venueServices.getAll();
+    public ApiResponse<List<Venue>> getAllVenues(){
+        List<Venue> venueList = venueServices.getAll();
+        return ApiResponse.success(venueList, "venue List");
     }
 }
