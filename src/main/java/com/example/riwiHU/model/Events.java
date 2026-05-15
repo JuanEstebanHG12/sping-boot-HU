@@ -11,12 +11,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Events")
 public class Events {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String nombre;
-    LocalDateTime fecha;
-    String description;
+    private int id;
+
+    private String nombre;
+    private LocalDateTime fecha;
+    private String description;
 }

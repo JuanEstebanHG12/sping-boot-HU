@@ -3,8 +3,8 @@ package com.example.riwiHU.services;
 import com.example.riwiHU.dto.EventRequest;
 import com.example.riwiHU.dto.EventResponse;
 import com.example.riwiHU.model.Events;
-import com.example.riwiHU.repository.GenericMemoryRepositoryImpl;
-import com.example.riwiHU.repository.GenericRepository;
+//import com.example.riwiHU.repository.GenericMemoryRepositoryImpl;
+import com.example.riwiHU.repository.EventsRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,14 +12,12 @@ import java.util.List;
 
 @Service
 public class EventServices {
-    private int nextId = 1;
+    private final EventsRepository eventsRepository;
 
-    private final GenericRepository<Events, Integer> eventsRepository;
-
-
-    public EventServices(GenericRepository<Events, Integer> eventsRepository) {
+    public EventServices(EventsRepository eventsRepository) {
         this.eventsRepository = eventsRepository;
     }
+
 
     public List<Events> getAllEvents(){
         return eventsRepository.findAll();
@@ -27,7 +25,6 @@ public class EventServices {
 
     public EventResponse createEvent (EventRequest eventRequest){
         Events events = new Events();
-        events.setId(nextId++);
         events.setNombre(eventRequest.getNombre());
         events.setDescription(eventRequest.getDescription());
         events.setFecha(LocalDateTime.now());
