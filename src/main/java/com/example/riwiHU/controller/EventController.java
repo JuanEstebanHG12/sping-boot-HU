@@ -1,13 +1,12 @@
 package com.example.riwiHU.controller;
 
 
-import com.example.riwiHU.dto.ApiResponse;
 import com.example.riwiHU.dto.EventRequest;
 import com.example.riwiHU.dto.EventResponse;
 import com.example.riwiHU.model.Events;
 import com.example.riwiHU.services.EventServices;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,15 +21,14 @@ public class EventController {
     }
 
     @GetMapping
-    public ApiResponse<List<Events>> getAllEvents(){
+    public ResponseEntity<List<Events>> getAllEvents(){
         List<Events> eventResponseList = eventServices.getAllEvents();
-        return ApiResponse.success(eventResponseList, "Events ");
+        return ResponseEntity.ok(eventResponseList);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<EventResponse> createEvent(@RequestBody @Valid EventRequest eventRequest){
+    public ResponseEntity<EventResponse> createEvent(@RequestBody @Valid EventRequest eventRequest){
         EventResponse eventResponse = eventServices.createEvent(eventRequest);
-        return ApiResponse.success(eventResponse,"Event Created");
+        return ResponseEntity.status(201).body(eventResponse);
     }
 }

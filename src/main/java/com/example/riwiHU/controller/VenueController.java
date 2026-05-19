@@ -1,12 +1,11 @@
 package com.example.riwiHU.controller;
 
-import com.example.riwiHU.dto.ApiResponse;
 import com.example.riwiHU.dto.VenueRequest;
 import com.example.riwiHU.dto.VenueResponse;
 import com.example.riwiHU.model.Venue;
 import com.example.riwiHU.services.VenueServices;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,15 +20,14 @@ public class VenueController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ApiResponse<VenueResponse> saveVenue(@Valid @RequestBody VenueRequest venue){
+    public ResponseEntity<VenueResponse> saveVenue(@Valid @RequestBody VenueRequest venue){
         VenueResponse venueRes = venueServices.createVenue(venue);
-        return ApiResponse.success(venueRes, "venue Creada");
+        return ResponseEntity.status(201).body(venueRes);
     }
 
     @GetMapping
-    public ApiResponse<List<Venue>> getAllVenues(){
+    public ResponseEntity<List<Venue>> getAllVenues(){
         List<Venue> venueList = venueServices.getAll();
-        return ApiResponse.success(venueList, "venue List");
+        return ResponseEntity.ok(venueList);
     }
 }
