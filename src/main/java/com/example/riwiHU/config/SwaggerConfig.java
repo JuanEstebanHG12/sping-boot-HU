@@ -11,7 +11,10 @@ import org.springframework.context.annotation.Configuration;
                 title = "Riwi HU API",
                 version = "1.0",
                 description = "Documentacion basica de la API para eventos y venues."
-        )
+        ),
+        servers = {
+                @Server(url = "/api", description = "API Server")
+        }
 )
 public class SwaggerConfig {
 }
