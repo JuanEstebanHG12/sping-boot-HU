@@ -35,4 +35,8 @@ public class VenueServices {
     public List<Venue> getAll() {
         return venueRepository.findAll();
     }
+
+    public List<Venue> getAllVenues() {
+        return venueRepository.findAll();
+    }
 }

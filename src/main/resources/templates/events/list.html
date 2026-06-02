@@ -55,6 +55,19 @@
             background: #f0f0f0;
             transform: translateY(-2px);
         }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn-disabled {
+            background: #6c757d;
+            color: white;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
         .nav-links {
             display: flex;
             gap: 1rem;
@@ -71,6 +84,43 @@
         }
         .content {
             padding: 2rem;
+        }
+        .filter-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .filter-form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .filter-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
         }
         .empty-state {
             text-align: center;
@@ -113,6 +163,17 @@
             margin-bottom: 1rem;
             border: 1px solid #c3e6cb;
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        .pagination-info {
+            text-align: center;
+            margin-top: 1rem;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -130,31 +191,85 @@
                 <span th:text="${successMessage}"></span>
             </div>
             
-            <div th:if="${events == null or #lists.isEmpty(events)}" class="empty-state">
-                <h2>📭 Catálogo Vacío</h2>
-                <p>Actualmente no hay eventos programados.</p>
-                <p style="margin-top: 1rem;">¡Crea tu primer evento para comenzar!</p>
+            <div class="filter-section">
+                <form th:action="@{/admin/events}" method="get" class="filter-form">
+                    <div class="filter-group">
+                        <label for="city">Ciudad</label>
+                        <input 
+                            type="text" 
+                            id="city" 
+                            name="city" 
+                            th:value="${city}"
+                            placeholder="Buscar por ciudad..."
+                        />
+                    </div>
+                    <div class="filter-group">
+                        <label for="category">Categoría</label>
+                        <input 
+                            type="text" 
+                            id="category" 
+                            name="category" 
+                            th:value="${category}"
+                            placeholder="Buscar por categoría..."
+                        />
+                    </div>
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                        <a th:href="@{/admin/events}" class="btn btn-danger">Limpiar</a>
+                    </div>
+                </form>
             </div>
             
-            <div th:if="${events != null and not #lists.isEmpty(events)}">
+            <div th:if="${summaries == null or #lists.isEmpty(summaries.content)}" class="empty-state">
+                <h2>📭 Catálogo Vacío</h2>
+                <p>No se encontraron eventos con los filtros actuales.</p>
+                <p style="margin-top: 1rem;">¡Intenta con otros filtros o crea un nuevo evento!</p>
+            </div>
+            
+            <div th:if="${summaries != null and not #lists.isEmpty(summaries.content)}">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Fecha</th>
-                            <th>Descripción</th>
+                            <th>Lugar</th>
+                            <th>Ciudad</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="event : ${events}">
-                            <td th:text="${event.id}"></td>
-                            <td th:text="${event.nombre}"></td>
-                            <td th:text="${#temporals.format(event.fecha, 'dd/MM/yyyy HH:mm')}"></td>
-                            <td th:text="${event.description}"></td>
+                        <tr th:each="summary : ${summaries.content}">
+                            <td th:text="${summary.id}"></td>
+                            <td th:text="${summary.nombre}"></td>
+                            <td th:text="${#temporals.format(summary.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                            <td th:text="${summary.venueName}"></td>
+                            <td th:text="${summary.city}"></td>
+                            <td>
+                                <form th:action="@{/admin/events/{id}/delete(id=${summary.id})}" method="post" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Desactivar</button>
+                                </form>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                
+                <div class="pagination-info">
+                    <span th:text="'Página ' + (${page} + 1)"></span>
+                </div>
+                
+                <div class="pagination">
+                    <a th:if="${summaries.hasPrevious()}"
+                       th:href="@{/admin/events(page=${page - 1}, size=${size}, city=${city}, category=${category})}"
+                       class="btn btn-primary">← Anterior</a>
+                    <a th:if="${!summaries.hasPrevious()}"
+                       class="btn btn-disabled">← Anterior</a>
+                    <a th:if="${summaries.hasNext()}"
+                       th:href="@{/admin/events(page=${page + 1}, size=${size}, city=${city}, category=${category})}"
+                       class="btn btn-primary">Siguiente →</a>
+                    <a th:if="${!summaries.hasNext()}"
+                       class="btn btn-disabled">Siguiente →</a>
+                </div>
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@
             padding: 2rem;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 16px;
@@ -47,7 +47,8 @@
             color: #333;
         }
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 0.75rem;
             border: 2px solid #e0e0e0;
@@ -56,13 +57,28 @@
             transition: border-color 0.3s ease;
         }
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
         }
         .form-group textarea {
             min-height: 120px;
             resize: vertical;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
         }
         .error {
             color: #dc3545;
@@ -132,6 +148,41 @@
                         required
                     />
                     <div th:if="${#fields.hasErrors('nombre')}" class="error" th:errors="*{nombre}"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fecha">Fecha y Hora</label>
+                    <input 
+                        type="datetime-local" 
+                        id="fecha" 
+                        th:field="*{fecha}"
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="venueId">Lugar (Venue) *</label>
+                    <select id="venueId" name="venueId" required>
+                        <option value="">Seleccione un lugar</option>
+                        <option th:each="venue : ${venues}" 
+                                th:value="${venue.id}" 
+                                th:text="${venue.nombre + ' - ' + venue.city}">
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Categorías</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" th:each="category : ${categories}">
+                            <input 
+                                type="checkbox" 
+                                th:field="*{categoryIds}" 
+                                th:value="${category.id}"
+                                id="|category-${category.id}|"
+                            />
+                            <label th:for="|category-${category.id}|" th:text="${category.name}"></label>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">

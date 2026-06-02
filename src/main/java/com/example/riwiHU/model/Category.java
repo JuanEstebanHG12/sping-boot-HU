@@ -9,17 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "venues")
-public class Venue {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nombre;
-    private String direction;
-    private int capacidad;
+    @Column(nullable = false, unique = true)
+    private String name;
     
-    @Column(nullable = false)
-    private String city;
+    private String description;
 }

@@ -1,0 +1,3 @@
+-- V2: Evolución relacional (nuevos campos y tablas de categorías)
+-- Esta migración está vacía porque la estructura relacional completa
+-- ya fue creada en V1. Se mantiene para consistencia con el esquema versionado.

@@ -1,0 +1,37 @@
+-- V1: Estructura inicial de tablas
+CREATE TABLE IF NOT EXISTS venues (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    direction VARCHAR(255),
+    capacidad INTEGER,
+    city VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS events (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    fecha TIMESTAMP NOT NULL,
+    description TEXT,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    venue_id INTEGER NOT NULL,
+    CONSTRAINT fk_venue FOREIGN KEY (venue_id) REFERENCES venues(id)
+);
+
+CREATE TABLE IF NOT EXISTS events_categories (
+    event_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    PRIMARY KEY (event_id, category_id),
+    CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id),
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE INDEX idx_events_fecha ON events(fecha DESC);
+CREATE INDEX idx_events_venue ON events(venue_id);
+CREATE INDEX idx_events_city ON venues(city);
+CREATE INDEX idx_categories_name ON categories(name);
