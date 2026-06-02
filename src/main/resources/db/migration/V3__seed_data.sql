@@ -8,7 +8,8 @@ INSERT INTO categories (name, description) VALUES
 ('Sports', 'Eventos deportivos y competiciones'),
 ('Gastronomy', 'Festivales de comida y bebida'),
 ('Festivals', 'Festivales multitemáticos'),
-('Theater', 'Representaciones teatrales y obras de arte');
+('Theater', 'Representaciones teatrales y obras de arte')
+ON CONFLICT (name) DO NOTHING;
 
 -- Insertar venues (sedes) en diferentes ciudades
 INSERT INTO venues (nombre, direction, capacidad, city) VALUES
@@ -274,4 +275,5 @@ INSERT INTO events_categories (event_id, category_id) VALUES
 -- Theater (category_id = 7)
 (5, 7), (12, 7), (19, 7), (26, 7), (33, 7), (40, 7), (47, 7), (54, 7), (61, 7), (68, 7),
 (75, 7), (82, 7), (89, 7), (96, 7), (103, 7), (110, 7), (117, 7), (124, 7), (131, 7), (138, 7),
-(145, 7), (152, 7), (159, 7), (166, 7), (173, 7);
+(145, 7), (152, 7), (159, 7), (166, 7), (173, 7)
+ON CONFLICT DO NOTHING;
